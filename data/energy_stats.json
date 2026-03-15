@@ -1,0 +1,14 @@
+{
+  "projected_daily_consumption_2026": [
+    { "country": "China", "daily_quads": 0.52 },
+    { "country": "United States", "daily_quads": 0.45 },
+    { "country": "India", "daily_quads": 0.29 },
+    { "country": "Russia", "daily_quads": 0.18 },
+    { "country": "Japan", "daily_quads": 0.14 },
+    { "country": "Germany", "daily_quads": 0.10 },
+    { "country": "South Korea", "daily_quads": 0.08 },
+    { "country": "Canada", "daily_quads": 0.07 },
+    { "country": "Brazil", "daily_quads": 0.07 },
+    { "country": "Iran", "daily_quads": 0.06 }
+  ]
+}
