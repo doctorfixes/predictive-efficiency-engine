@@ -1,0 +1,48 @@
+name: Energy Data Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-energy-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Validate JSON Syntax
+        run: jq '.' data/energy_stats.json
+
+      - name: Test Global Consumption Thresholds
+        run: |
+          # Extract a single value for China's projected consumption (first match)
+          CHINA_VAL=$(jq -r '[.projected_daily_consumption_2026[] | select(.country=="China") | .daily_quads] | first // empty' data/energy_stats.json)
+
+          # Validate that the value exists and is non-empty
+          if [ -z "$CHINA_VAL" ]; then
+            echo "Validation Failed: China entry not found in data/energy_stats.json"
+            exit 1
+          fi
+
+          # Safe numeric comparison using awk
+          if awk -v val="$CHINA_VAL" 'BEGIN { exit !(val > 0.4) }'; then
+            echo "Validation Passed: China daily consumption ($CHINA_VAL Quads) exceeds threshold of 0.4 Quads."
+          else
+            echo "Validation Failed: China daily consumption ($CHINA_VAL Quads) does not exceed threshold of 0.4 Quads."
+            exit 1
+          fi
+
+      - name: Verify Top 10 Entry Count
+        run: |
+          COUNT=$(jq '.projected_daily_consumption_2026 | length' data/energy_stats.json)
+          if [ "$COUNT" -lt 10 ]; then
+            echo "Validation Failed: Expected at least 10 entries in projected_daily_consumption_2026, found $COUNT."
+            exit 1
+          fi
+          echo "Validation Passed: Dataset contains $COUNT entries (minimum 10 required)."
