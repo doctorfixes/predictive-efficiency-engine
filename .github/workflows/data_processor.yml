@@ -6,6 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -23,7 +25,7 @@ jobs:
         # NEW: Only install what's in your requirements file
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         # Fallback if you haven't made a requirements.txt yet
-        pip install pandas numpy 
+        pip install pandas
 
     - name: Run Data Processor Tests
       run: |
