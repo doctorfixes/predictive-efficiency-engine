@@ -1,0 +1,65 @@
+name: Energy Data Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-energy-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Validate JSON Syntax
+        run: jq '.' data/energy_stats.json
+
+      - name: Test Global Consumption Thresholds
+        run: |
+          # Extract the first matching China entry to get a single scalar value.
+          # Requires jq >= 1.5 for the first() builtin (ubuntu-latest ships jq 1.6+).
+          CHINA_VAL=$(jq 'first(.projected_daily_consumption_2026[] | select(.country=="China") | .daily_quads)' data/energy_stats.json)
+
+          # Validate that a value was found (jq returns "null" when no match)
+          if [ -z "$CHINA_VAL" ] || [ "$CHINA_VAL" = "null" ]; then
+            echo "Error: Could not find China's daily_quads value in the dataset."
+            exit 1
+          fi
+
+          # Validate the value is a plain decimal number to prevent injection via awk
+          if ! echo "$CHINA_VAL" | grep -qE '^-?[0-9]+(\.[0-9]+)?$'; then
+            echo "Error: China's daily_quads value is not a valid number: $CHINA_VAL"
+            exit 1
+          fi
+
+          echo "China daily_quads value: $CHINA_VAL"
+
+          # Perform numeric comparison using awk (handles decimals correctly)
+          if awk "BEGIN { exit !($CHINA_VAL > 0.4) }"; then
+            echo "Validation Passed: China's consumption ($CHINA_VAL Quads) exceeds threshold (0.4 Quads)."
+          else
+            echo "Validation Failed: China's consumption ($CHINA_VAL Quads) does not exceed threshold (0.4 Quads). Data anomaly detected."
+            exit 1
+          fi
+
+      - name: Verify Top 10 Entry Count
+        run: |
+          COUNT=$(jq '.projected_daily_consumption_2026 | length' data/energy_stats.json)
+
+          # Validate that COUNT is a non-negative integer before comparing
+          if [ -z "$COUNT" ] || [ "$COUNT" = "null" ] || ! echo "$COUNT" | grep -qE '^[0-9]+$'; then
+            echo "Error: Could not determine dataset entry count (got: $COUNT)."
+            exit 1
+          fi
+
+          echo "Dataset entry count: $COUNT"
+          if [ "$COUNT" -lt 10 ]; then
+            echo "Error: Data file has only $COUNT entries; expected at least 10."
+            exit 1
+          fi
+          echo "Entry count check passed: $COUNT entries found."
