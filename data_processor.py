@@ -100,6 +100,98 @@ def project_consumption(nation, years=5):
     return [round(base * ((1 + trend) ** y), 4) for y in range(1, years + 1)]
 
 
+def compute_risk_adjusted_cost(nation, geo_risks):
+    """Compute the risk-adjusted cost per unit for a nation.
+
+    For each geopolitical risk factor associated with the nation, applies a
+    probability-weighted cost multiplier on top of the nation's base cost.
+
+    Args:
+        nation: Nation dict with 'name' and 'baseCostPerUnit' keys.
+        geo_risks: Dict mapping nation/region name to risk data.
+
+    Returns:
+        Risk-adjusted cost per unit (USD per MMBTU), rounded to 4 decimal places.
+        Returns baseCostPerUnit unchanged if the nation has no geo-risk entry.
+    """
+    name = nation["name"]
+    base_cost = nation["baseCostPerUnit"]
+    if name not in geo_risks:
+        return base_cost
+    multiplier = 1.0
+    for factor in geo_risks[name]["factors"]:
+        prob = factor["probability"]
+        cm = factor["costMultiplier"]
+        multiplier *= 1.0 + (cm - 1.0) * prob
+    return round(base_cost * multiplier, 4)
+
+
+def compute_effective_supply_multiplier(risk_entry):
+    """Compute the net effective supply multiplier for a geopolitical risk entry.
+
+    Applies probability-weighted supply reduction for each factor. A value of 1.0
+    means no supply disruption; values below 1.0 indicate reduced supply.
+
+    Args:
+        risk_entry: Dict with a 'factors' key containing a list of factor dicts,
+                    each with 'supplyMultiplier' and 'probability' fields.
+
+    Returns:
+        Net supply multiplier in (0, 1], rounded to 4 decimal places.
+    """
+    multiplier = 1.0
+    for factor in risk_entry["factors"]:
+        prob = factor["probability"]
+        sm = factor["supplyMultiplier"]
+        multiplier *= 1.0 - (1.0 - sm) * prob
+    return round(multiplier, 4)
+
+
+def rank_nations_by_market_value(nations, geo_risks, projections_2026):
+    """Rank nations by daily market value from worst to best.
+
+    Daily market value is computed as:
+        risk_adjusted_cost × supply_adjusted_daily_quads
+
+    Nations with a higher (costlier) market value are ranked worst; those with
+    a lower market value are ranked best.
+
+    Args:
+        nations: List of nation dicts (must have 'name', 'baseCostPerUnit').
+        geo_risks: Dict mapping nation/region name to geopolitical risk data.
+        projections_2026: List of {'country': str, 'daily_quads': float} dicts.
+
+    Returns:
+        List of result dicts sorted from worst (rank 1) to best, each containing:
+        'rank', 'nation', 'adj_cost', 'supply_multiplier', 'daily_quads',
+        'market_value'.
+    """
+    proj_map = {p["country"]: p["daily_quads"] for p in projections_2026}
+    results = []
+    for nation in nations:
+        name = nation["name"]
+        if name not in proj_map:
+            continue
+        adj_cost = compute_risk_adjusted_cost(nation, geo_risks)
+        if name in geo_risks:
+            supply_mult = compute_effective_supply_multiplier(geo_risks[name])
+        else:
+            supply_mult = 1.0
+        daily_quads = round(proj_map[name] * supply_mult, 6)
+        market_value = round(adj_cost * daily_quads, 6)
+        results.append({
+            "nation": name,
+            "adj_cost": adj_cost,
+            "supply_multiplier": supply_mult,
+            "daily_quads": daily_quads,
+            "market_value": market_value,
+        })
+    results.sort(key=lambda x: x["market_value"], reverse=True)
+    for i, r in enumerate(results):
+        r["rank"] = i + 1
+    return results
+
+
 def analyze_and_print(data):
     """Run a full analysis of the energy dataset and print a summary report.
 
@@ -175,4 +267,3 @@ def analyze_and_print(data):
 if __name__ == "__main__":
     energy_data = load_energy_data()
     analyze_and_print(energy_data)
-
