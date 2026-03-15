@@ -1,0 +1,797 @@
+{
+  "metadata": {
+    "description": "Top 50 nations by daily energy consumption with resource cost indices",
+    "units": {
+      "daily_quads": "Quadrillion BTU per day",
+      "cost_index": "USD per MMBTU equivalent",
+      "growth_rate": "Annual fractional growth rate"
+    },
+    "base_year": 2024,
+    "projection_year": 2026,
+    "resource_types": ["Coal", "Oil", "Gas", "Nuclear", "Hydro", "Renewables", "Wind", "Geo", "Biomass", "Bio", "OilShale"],
+    "scenarios": {
+      "constrained": 0.6,
+      "baseline": 1.0,
+      "accelerated": 1.4
+    },
+    "cost_trends_annual": {
+      "Coal": 0.02,
+      "Oil": 0.03,
+      "Gas": 0.025,
+      "Nuclear": 0.0,
+      "Hydro": -0.01,
+      "Renewables": -0.05,
+      "Wind": -0.045,
+      "Geo": -0.02,
+      "Biomass": -0.01,
+      "Bio": -0.04,
+      "OilShale": 0.02
+    },
+    "renewable_efficiency_bonus": 0.08
+  },
+  "resource_cost_index": {
+    "Coal":       { "current_usd_mmbtu": 2.85,  "trend": "rising",   "color": "#6b7280" },
+    "Oil":        { "current_usd_mmbtu": 18.40, "trend": "rising",   "color": "#dc2626" },
+    "Gas":        { "current_usd_mmbtu": 3.90,  "trend": "rising",   "color": "#f97316" },
+    "Nuclear":    { "current_usd_mmbtu": 1.05,  "trend": "stable",   "color": "#a78bfa" },
+    "Hydro":      { "current_usd_mmbtu": 0.95,  "trend": "falling",  "color": "#22d3ee" },
+    "Renewables": { "current_usd_mmbtu": 1.65,  "trend": "falling",  "color": "#10b981" },
+    "Wind":       { "current_usd_mmbtu": 1.40,  "trend": "falling",  "color": "#38bdf8" },
+    "Geo":        { "current_usd_mmbtu": 2.10,  "trend": "falling",  "color": "#34d399" },
+    "Biomass":    { "current_usd_mmbtu": 4.20,  "trend": "falling",  "color": "#86efac" },
+    "Bio":        { "current_usd_mmbtu": 5.80,  "trend": "falling",  "color": "#4ade80" },
+    "OilShale":   { "current_usd_mmbtu": 8.50,  "trend": "rising",   "color": "#b45309" }
+  },
+  "projected_daily_consumption_2026": [
+    {
+      "rank": 1,
+      "country": "China",
+      "daily_quads": 0.5280,
+      "base_year_quads": 0.5044,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.540, "Oil": 0.195, "Gas": 0.090, "Nuclear": 0.045,
+        "Hydro": 0.065, "Renewables": 0.030, "Wind": 0.025, "Geo": 0.002,
+        "Biomass": 0.005, "Bio": 0.002, "OilShale": 0.001
+      },
+      "cost_index_current": 5.82,
+      "cost_index_projected": 6.11
+    },
+    {
+      "rank": 2,
+      "country": "United States",
+      "daily_quads": 0.2620,
+      "base_year_quads": 0.2507,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.115, "Oil": 0.360, "Gas": 0.335, "Nuclear": 0.085,
+        "Hydro": 0.025, "Renewables": 0.045, "Wind": 0.028, "Geo": 0.004,
+        "Biomass": 0.002, "Bio": 0.001, "OilShale": 0.000
+      },
+      "cost_index_current": 8.95,
+      "cost_index_projected": 9.36
+    },
+    {
+      "rank": 3,
+      "country": "India",
+      "daily_quads": 0.1456,
+      "base_year_quads": 0.1385,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.540, "Oil": 0.245, "Gas": 0.065, "Nuclear": 0.020,
+        "Hydro": 0.085, "Renewables": 0.030, "Wind": 0.010, "Geo": 0.000,
+        "Biomass": 0.005, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 5.18,
+      "cost_index_projected": 5.49
+    },
+    {
+      "rank": 4,
+      "country": "Russia",
+      "daily_quads": 0.0826,
+      "base_year_quads": 0.0789,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.145, "Oil": 0.310, "Gas": 0.420, "Nuclear": 0.065,
+        "Hydro": 0.055, "Renewables": 0.002, "Wind": 0.001, "Geo": 0.001,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 7.20,
+      "cost_index_projected": 7.62
+    },
+    {
+      "rank": 5,
+      "country": "Japan",
+      "daily_quads": 0.0647,
+      "base_year_quads": 0.0619,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.270, "Oil": 0.380, "Gas": 0.215, "Nuclear": 0.045,
+        "Hydro": 0.040, "Renewables": 0.030, "Wind": 0.010, "Geo": 0.002,
+        "Biomass": 0.005, "Bio": 0.003, "OilShale": 0.000
+      },
+      "cost_index_current": 10.85,
+      "cost_index_projected": 11.42
+    },
+    {
+      "rank": 6,
+      "country": "Germany",
+      "daily_quads": 0.0360,
+      "base_year_quads": 0.0344,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.205, "Oil": 0.325, "Gas": 0.255, "Nuclear": 0.010,
+        "Hydro": 0.015, "Renewables": 0.120, "Wind": 0.065, "Geo": 0.001,
+        "Biomass": 0.004, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 9.50,
+      "cost_index_projected": 9.85
+    },
+    {
+      "rank": 7,
+      "country": "South Korea",
+      "daily_quads": 0.0318,
+      "base_year_quads": 0.0304,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.270, "Oil": 0.380, "Gas": 0.195, "Nuclear": 0.115,
+        "Hydro": 0.005, "Renewables": 0.025, "Wind": 0.005, "Geo": 0.000,
+        "Biomass": 0.005, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 9.80,
+      "cost_index_projected": 10.25
+    },
+    {
+      "rank": 8,
+      "country": "Canada",
+      "daily_quads": 0.0304,
+      "base_year_quads": 0.0291,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.055, "Oil": 0.395, "Gas": 0.285, "Nuclear": 0.065,
+        "Hydro": 0.175, "Renewables": 0.015, "Wind": 0.010, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 7.65,
+      "cost_index_projected": 7.98
+    },
+    {
+      "rank": 9,
+      "country": "Saudi Arabia",
+      "daily_quads": 0.0291,
+      "base_year_quads": 0.0278,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.000, "Oil": 0.600, "Gas": 0.395, "Nuclear": 0.000,
+        "Hydro": 0.000, "Renewables": 0.003, "Wind": 0.001, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 15.20,
+      "cost_index_projected": 16.10
+    },
+    {
+      "rank": 10,
+      "country": "Brazil",
+      "daily_quads": 0.0279,
+      "base_year_quads": 0.0266,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.055, "Oil": 0.355, "Gas": 0.125, "Nuclear": 0.015,
+        "Hydro": 0.360, "Renewables": 0.060, "Wind": 0.025, "Geo": 0.001,
+        "Biomass": 0.004, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 5.40,
+      "cost_index_projected": 5.60
+    },
+    {
+      "rank": 11,
+      "country": "France",
+      "daily_quads": 0.0261,
+      "base_year_quads": 0.0249,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.030, "Oil": 0.330, "Gas": 0.175, "Nuclear": 0.365,
+        "Hydro": 0.060, "Renewables": 0.020, "Wind": 0.015, "Geo": 0.001,
+        "Biomass": 0.004, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 5.95,
+      "cost_index_projected": 6.05
+    },
+    {
+      "rank": 12,
+      "country": "Iran",
+      "daily_quads": 0.0254,
+      "base_year_quads": 0.0242,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.010, "Oil": 0.325, "Gas": 0.640, "Nuclear": 0.000,
+        "Hydro": 0.020, "Renewables": 0.003, "Wind": 0.001, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 4.20,
+      "cost_index_projected": 4.52
+    },
+    {
+      "rank": 13,
+      "country": "United Kingdom",
+      "daily_quads": 0.0234,
+      "base_year_quads": 0.0224,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.030, "Oil": 0.350, "Gas": 0.320, "Nuclear": 0.070,
+        "Hydro": 0.010, "Renewables": 0.145, "Wind": 0.065, "Geo": 0.001,
+        "Biomass": 0.005, "Bio": 0.004, "OilShale": 0.000
+      },
+      "cost_index_current": 9.35,
+      "cost_index_projected": 9.60
+    },
+    {
+      "rank": 14,
+      "country": "Mexico",
+      "daily_quads": 0.0212,
+      "base_year_quads": 0.0202,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.055, "Oil": 0.455, "Gas": 0.370, "Nuclear": 0.020,
+        "Hydro": 0.075, "Renewables": 0.015, "Wind": 0.005, "Geo": 0.004,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 7.85,
+      "cost_index_projected": 8.26
+    },
+    {
+      "rank": 15,
+      "country": "Australia",
+      "daily_quads": 0.0196,
+      "base_year_quads": 0.0187,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.300, "Oil": 0.355, "Gas": 0.275, "Nuclear": 0.000,
+        "Hydro": 0.015, "Renewables": 0.040, "Wind": 0.015, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 8.50,
+      "cost_index_projected": 8.90
+    },
+    {
+      "rank": 16,
+      "country": "Turkey",
+      "daily_quads": 0.0183,
+      "base_year_quads": 0.0174,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.290, "Oil": 0.310, "Gas": 0.230, "Nuclear": 0.000,
+        "Hydro": 0.100, "Renewables": 0.040, "Wind": 0.025, "Geo": 0.003,
+        "Biomass": 0.002, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 6.80,
+      "cost_index_projected": 7.25
+    },
+    {
+      "rank": 17,
+      "country": "Indonesia",
+      "daily_quads": 0.0175,
+      "base_year_quads": 0.0166,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.540, "Oil": 0.275, "Gas": 0.150, "Nuclear": 0.000,
+        "Hydro": 0.025, "Renewables": 0.005, "Wind": 0.002, "Geo": 0.002,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 4.50,
+      "cost_index_projected": 4.95
+    },
+    {
+      "rank": 18,
+      "country": "Italy",
+      "daily_quads": 0.0165,
+      "base_year_quads": 0.0158,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.065, "Oil": 0.345, "Gas": 0.370, "Nuclear": 0.000,
+        "Hydro": 0.060, "Renewables": 0.095, "Wind": 0.035, "Geo": 0.016,
+        "Biomass": 0.009, "Bio": 0.005, "OilShale": 0.000
+      },
+      "cost_index_current": 8.80,
+      "cost_index_projected": 9.05
+    },
+    {
+      "rank": 19,
+      "country": "Spain",
+      "daily_quads": 0.0155,
+      "base_year_quads": 0.0148,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.060, "Oil": 0.360, "Gas": 0.215, "Nuclear": 0.080,
+        "Hydro": 0.080, "Renewables": 0.120, "Wind": 0.075, "Geo": 0.000,
+        "Biomass": 0.005, "Bio": 0.005, "OilShale": 0.000
+      },
+      "cost_index_current": 7.95,
+      "cost_index_projected": 8.05
+    },
+    {
+      "rank": 20,
+      "country": "Poland",
+      "daily_quads": 0.0137,
+      "base_year_quads": 0.0131,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.480, "Oil": 0.270, "Gas": 0.165, "Nuclear": 0.000,
+        "Hydro": 0.010, "Renewables": 0.060, "Wind": 0.015, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 5.55,
+      "cost_index_projected": 5.85
+    },
+    {
+      "rank": 21,
+      "country": "Thailand",
+      "daily_quads": 0.0128,
+      "base_year_quads": 0.0122,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.190, "Oil": 0.355, "Gas": 0.390, "Nuclear": 0.000,
+        "Hydro": 0.035, "Renewables": 0.020, "Wind": 0.005, "Geo": 0.001,
+        "Biomass": 0.004, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 7.60,
+      "cost_index_projected": 8.05
+    },
+    {
+      "rank": 22,
+      "country": "Egypt",
+      "daily_quads": 0.0119,
+      "base_year_quads": 0.0113,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.005, "Oil": 0.340, "Gas": 0.620, "Nuclear": 0.000,
+        "Hydro": 0.030, "Renewables": 0.003, "Wind": 0.002, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 4.35,
+      "cost_index_projected": 4.75
+    },
+    {
+      "rank": 23,
+      "country": "Netherlands",
+      "daily_quads": 0.0116,
+      "base_year_quads": 0.0111,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.095, "Oil": 0.350, "Gas": 0.370, "Nuclear": 0.015,
+        "Hydro": 0.002, "Renewables": 0.095, "Wind": 0.063, "Geo": 0.000,
+        "Biomass": 0.005, "Bio": 0.005, "OilShale": 0.000
+      },
+      "cost_index_current": 9.40,
+      "cost_index_projected": 9.65
+    },
+    {
+      "rank": 24,
+      "country": "Argentina",
+      "daily_quads": 0.0112,
+      "base_year_quads": 0.0107,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.015, "Oil": 0.340, "Gas": 0.510, "Nuclear": 0.040,
+        "Hydro": 0.065, "Renewables": 0.020, "Wind": 0.009, "Geo": 0.001,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 6.30,
+      "cost_index_projected": 6.72
+    },
+    {
+      "rank": 25,
+      "country": "Vietnam",
+      "daily_quads": 0.0109,
+      "base_year_quads": 0.0104,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.420, "Oil": 0.295, "Gas": 0.175, "Nuclear": 0.000,
+        "Hydro": 0.085, "Renewables": 0.020, "Wind": 0.005, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 4.90,
+      "cost_index_projected": 5.35
+    },
+    {
+      "rank": 26,
+      "country": "Venezuela",
+      "daily_quads": 0.0101,
+      "base_year_quads": 0.0096,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.005, "Oil": 0.450, "Gas": 0.450, "Nuclear": 0.000,
+        "Hydro": 0.090, "Renewables": 0.003, "Wind": 0.001, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 4.10,
+      "cost_index_projected": 4.50
+    },
+    {
+      "rank": 27,
+      "country": "Malaysia",
+      "daily_quads": 0.0097,
+      "base_year_quads": 0.0093,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.215, "Oil": 0.325, "Gas": 0.395, "Nuclear": 0.000,
+        "Hydro": 0.055, "Renewables": 0.005, "Wind": 0.002, "Geo": 0.001,
+        "Biomass": 0.002, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 6.45,
+      "cost_index_projected": 6.90
+    },
+    {
+      "rank": 28,
+      "country": "Kazakhstan",
+      "daily_quads": 0.0094,
+      "base_year_quads": 0.0090,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.570, "Oil": 0.215, "Gas": 0.180, "Nuclear": 0.000,
+        "Hydro": 0.030, "Renewables": 0.002, "Wind": 0.002, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 3.80,
+      "cost_index_projected": 4.10
+    },
+    {
+      "rank": 29,
+      "country": "Nigeria",
+      "daily_quads": 0.0087,
+      "base_year_quads": 0.0083,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.010, "Oil": 0.355, "Gas": 0.540, "Nuclear": 0.000,
+        "Hydro": 0.075, "Renewables": 0.015, "Wind": 0.003, "Geo": 0.000,
+        "Biomass": 0.002, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 5.10,
+      "cost_index_projected": 5.60
+    },
+    {
+      "rank": 30,
+      "country": "Belgium",
+      "daily_quads": 0.0083,
+      "base_year_quads": 0.0079,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.040, "Oil": 0.385, "Gas": 0.290, "Nuclear": 0.185,
+        "Hydro": 0.005, "Renewables": 0.065, "Wind": 0.025, "Geo": 0.000,
+        "Biomass": 0.005, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 8.60,
+      "cost_index_projected": 8.85
+    },
+    {
+      "rank": 31,
+      "country": "Sweden",
+      "daily_quads": 0.0081,
+      "base_year_quads": 0.0077,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.040, "Oil": 0.265, "Gas": 0.075, "Nuclear": 0.280,
+        "Hydro": 0.310, "Renewables": 0.025, "Wind": 0.005, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 4.50,
+      "cost_index_projected": 4.55
+    },
+    {
+      "rank": 32,
+      "country": "Pakistan",
+      "daily_quads": 0.0078,
+      "base_year_quads": 0.0074,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.265, "Oil": 0.250, "Gas": 0.360, "Nuclear": 0.060,
+        "Hydro": 0.055, "Renewables": 0.006, "Wind": 0.003, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 5.50,
+      "cost_index_projected": 6.00
+    },
+    {
+      "rank": 33,
+      "country": "Ukraine",
+      "daily_quads": 0.0074,
+      "base_year_quads": 0.0071,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.355, "Oil": 0.195, "Gas": 0.280, "Nuclear": 0.135,
+        "Hydro": 0.020, "Renewables": 0.010, "Wind": 0.004, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 5.25,
+      "cost_index_projected": 5.60
+    },
+    {
+      "rank": 34,
+      "country": "Czech Republic",
+      "daily_quads": 0.0069,
+      "base_year_quads": 0.0066,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.355, "Oil": 0.290, "Gas": 0.195, "Nuclear": 0.110,
+        "Hydro": 0.015, "Renewables": 0.030, "Wind": 0.005, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 6.40,
+      "cost_index_projected": 6.70
+    },
+    {
+      "rank": 35,
+      "country": "Romania",
+      "daily_quads": 0.0067,
+      "base_year_quads": 0.0064,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.185, "Oil": 0.280, "Gas": 0.300, "Nuclear": 0.090,
+        "Hydro": 0.105, "Renewables": 0.030, "Wind": 0.010, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 6.00,
+      "cost_index_projected": 6.35
+    },
+    {
+      "rank": 36,
+      "country": "South Africa",
+      "daily_quads": 0.0065,
+      "base_year_quads": 0.0062,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.720, "Oil": 0.195, "Gas": 0.020, "Nuclear": 0.040,
+        "Hydro": 0.010, "Renewables": 0.010, "Wind": 0.004, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 3.70,
+      "cost_index_projected": 3.95
+    },
+    {
+      "rank": 37,
+      "country": "Norway",
+      "daily_quads": 0.0063,
+      "base_year_quads": 0.0060,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.020, "Oil": 0.310, "Gas": 0.080, "Nuclear": 0.000,
+        "Hydro": 0.580, "Renewables": 0.005, "Wind": 0.005, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 4.30,
+      "cost_index_projected": 4.38
+    },
+    {
+      "rank": 38,
+      "country": "Greece",
+      "daily_quads": 0.0055,
+      "base_year_quads": 0.0053,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.180, "Oil": 0.430, "Gas": 0.185, "Nuclear": 0.000,
+        "Hydro": 0.060, "Renewables": 0.085, "Wind": 0.055, "Geo": 0.000,
+        "Biomass": 0.005, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 8.50,
+      "cost_index_projected": 8.75
+    },
+    {
+      "rank": 39,
+      "country": "Austria",
+      "daily_quads": 0.0054,
+      "base_year_quads": 0.0052,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.090, "Oil": 0.355, "Gas": 0.275, "Nuclear": 0.000,
+        "Hydro": 0.175, "Renewables": 0.080, "Wind": 0.025, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 7.60,
+      "cost_index_projected": 7.70
+    },
+    {
+      "rank": 40,
+      "country": "Philippines",
+      "daily_quads": 0.0052,
+      "base_year_quads": 0.0049,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.415, "Oil": 0.385, "Gas": 0.100, "Nuclear": 0.000,
+        "Hydro": 0.065, "Renewables": 0.025, "Wind": 0.006, "Geo": 0.004,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 6.90,
+      "cost_index_projected": 7.40
+    },
+    {
+      "rank": 41,
+      "country": "Bangladesh",
+      "daily_quads": 0.0049,
+      "base_year_quads": 0.0047,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.090, "Oil": 0.295, "Gas": 0.600, "Nuclear": 0.000,
+        "Hydro": 0.010, "Renewables": 0.003, "Wind": 0.001, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 4.80,
+      "cost_index_projected": 5.25
+    },
+    {
+      "rank": 42,
+      "country": "Portugal",
+      "daily_quads": 0.0046,
+      "base_year_quads": 0.0044,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.045, "Oil": 0.410, "Gas": 0.195, "Nuclear": 0.000,
+        "Hydro": 0.145, "Renewables": 0.150, "Wind": 0.050, "Geo": 0.005,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 6.80,
+      "cost_index_projected": 6.70
+    },
+    {
+      "rank": 43,
+      "country": "Iraq",
+      "daily_quads": 0.0044,
+      "base_year_quads": 0.0042,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.000, "Oil": 0.595, "Gas": 0.395, "Nuclear": 0.000,
+        "Hydro": 0.010, "Renewables": 0.000, "Wind": 0.000, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 13.50,
+      "cost_index_projected": 14.35
+    },
+    {
+      "rank": 44,
+      "country": "Algeria",
+      "daily_quads": 0.0042,
+      "base_year_quads": 0.0040,
+      "growth_rate": 0.030,
+      "growth_tier": "low",
+      "resource_mix": {
+        "Coal": 0.000, "Oil": 0.340, "Gas": 0.645, "Nuclear": 0.000,
+        "Hydro": 0.010, "Renewables": 0.003, "Wind": 0.001, "Geo": 0.000,
+        "Biomass": 0.001, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 3.95,
+      "cost_index_projected": 4.30
+    },
+    {
+      "rank": 45,
+      "country": "Hungary",
+      "daily_quads": 0.0040,
+      "base_year_quads": 0.0038,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.080, "Oil": 0.300, "Gas": 0.360, "Nuclear": 0.185,
+        "Hydro": 0.010, "Renewables": 0.055, "Wind": 0.010, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 7.10,
+      "cost_index_projected": 7.30
+    },
+    {
+      "rank": 46,
+      "country": "Israel",
+      "daily_quads": 0.0038,
+      "base_year_quads": 0.0036,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.105, "Oil": 0.330, "Gas": 0.465, "Nuclear": 0.000,
+        "Hydro": 0.000, "Renewables": 0.085, "Wind": 0.010, "Geo": 0.000,
+        "Biomass": 0.005, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 7.25,
+      "cost_index_projected": 7.60
+    },
+    {
+      "rank": 47,
+      "country": "Denmark",
+      "daily_quads": 0.0037,
+      "base_year_quads": 0.0035,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.060, "Oil": 0.350, "Gas": 0.220, "Nuclear": 0.000,
+        "Hydro": 0.000, "Renewables": 0.280, "Wind": 0.085, "Geo": 0.000,
+        "Biomass": 0.005, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 8.95,
+      "cost_index_projected": 8.65
+    },
+    {
+      "rank": 48,
+      "country": "Chile",
+      "daily_quads": 0.0036,
+      "base_year_quads": 0.0034,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.235, "Oil": 0.360, "Gas": 0.145, "Nuclear": 0.000,
+        "Hydro": 0.205, "Renewables": 0.040, "Wind": 0.010, "Geo": 0.005,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 6.50,
+      "cost_index_projected": 6.75
+    },
+    {
+      "rank": 49,
+      "country": "Finland",
+      "daily_quads": 0.0035,
+      "base_year_quads": 0.0033,
+      "growth_rate": 0.018,
+      "growth_tier": "high",
+      "resource_mix": {
+        "Coal": 0.095, "Oil": 0.280, "Gas": 0.075, "Nuclear": 0.300,
+        "Hydro": 0.140, "Renewables": 0.090, "Wind": 0.020, "Geo": 0.000,
+        "Biomass": 0.000, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 5.30,
+      "cost_index_projected": 5.25
+    },
+    {
+      "rank": 50,
+      "country": "Singapore",
+      "daily_quads": 0.0034,
+      "base_year_quads": 0.0032,
+      "growth_rate": 0.025,
+      "growth_tier": "mid",
+      "resource_mix": {
+        "Coal": 0.005, "Oil": 0.340, "Gas": 0.640, "Nuclear": 0.000,
+        "Hydro": 0.000, "Renewables": 0.010, "Wind": 0.003, "Geo": 0.000,
+        "Biomass": 0.002, "Bio": 0.000, "OilShale": 0.000
+      },
+      "cost_index_current": 9.50,
+      "cost_index_projected": 10.05
+    }
+  ]
+}
