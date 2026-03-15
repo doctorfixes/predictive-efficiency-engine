@@ -1,0 +1,43 @@
+# This is a GitHub Actions workflow file for testing Python and JavaScript
+
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Run Python tests
+        run: |
+          pytest
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install JavaScript dependencies
+        run: |
+          npm install
+
+      - name: Run ESLint
+        run: |
+          npx eslint .
+
+      - name: Run JavaScript tests
+        run: |
+          npm test
