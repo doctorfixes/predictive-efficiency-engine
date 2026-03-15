@@ -8,6 +8,9 @@ from data_processor import (
     get_regional_summary,
     project_consumption,
     analyze_and_print,
+    calc_geo_multipliers,
+    project_nation,
+    rank_nations_by_resource_cost,
 )
 
 
@@ -125,6 +128,117 @@ class TestEnergyDataAnalysis(unittest.TestCase):
         self.assertIn("Ukraine", output)
         self.assertIn("2026 Projected Daily Consumption", output)
         self.assertIn("5-Year Consumption Projection", output)
+
+
+class TestGeopoliticalRiskModel(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.data = load_energy_data()
+        cls.nations = cls.data["nations"]
+        cls.geo_risks = cls.data["geopolitical_risks"]
+
+    # ── calc_geo_multipliers ──────────────────────────────────────────────────
+
+    def test_calc_geo_multipliers_high_risk_nation(self):
+        result = calc_geo_multipliers("Ukraine", self.geo_risks)
+        self.assertIn("costMult", result)
+        self.assertIn("supplyMult", result)
+        # Ukraine has extreme risk – cost premium should be significant
+        self.assertGreater(result["costMult"], 1.0)
+        self.assertLess(result["supplyMult"], 1.0)
+        print(f"\n[calc_geo_multipliers] Ukraine – costMult={result['costMult']:.4f}, "
+              f"supplyMult={result['supplyMult']:.4f}")
+
+    def test_calc_geo_multipliers_no_risk_nation(self):
+        # Nations not in geo_risks default to neutral multipliers
+        result = calc_geo_multipliers("Nigeria", self.geo_risks)
+        self.assertEqual(result["costMult"], 1.0)
+        self.assertEqual(result["supplyMult"], 1.0)
+
+    def test_calc_geo_multipliers_stable_nation(self):
+        result = calc_geo_multipliers("Canada", self.geo_risks)
+        self.assertGreater(result["costMult"], 1.0)
+        # Canada is low risk – premium should be small
+        self.assertLess(result["costMult"], 1.1)
+
+    # ── project_nation ────────────────────────────────────────────────────────
+
+    def test_project_nation_returns_expected_keys(self):
+        nation = self.nations[0]  # China
+        result = project_nation(nation, self.geo_risks, year_offset=2)
+        for key in ("quads", "costPerUnit", "totalCostB", "costMult", "supplyMult", "geoCostPct"):
+            self.assertIn(key, result)
+
+    def test_project_nation_positive_values(self):
+        for n in self.nations:
+            result = project_nation(n, self.geo_risks, year_offset=2)
+            self.assertGreater(result["quads"], 0, f"{n['name']} quads must be positive")
+            self.assertGreater(result["costPerUnit"], 0, f"{n['name']} costPerUnit must be positive")
+            self.assertGreaterEqual(result["totalCostB"], 0, f"{n['name']} totalCostB must be non-negative")
+
+    def test_project_nation_geo_premium_high_risk(self):
+        ukraine = next(n for n in self.nations if n["name"] == "Ukraine")
+        result = project_nation(ukraine, self.geo_risks, year_offset=2)
+        # Ukraine should have a meaningful geopolitical cost premium
+        self.assertGreater(result["geoCostPct"], 0)
+        print(f"\n[project_nation] Ukraine 2-year projection: "
+              f"{result['quads']:.2f} Quads, "
+              f"${result['costPerUnit']:.2f}/MMBTU, "
+              f"geo premium +{result['geoCostPct']:.1f}%")
+
+    def test_project_nation_zero_offset(self):
+        # At year_offset=0 supply dampen = 0 and renewable_discount = 1,
+        # so projected quads equals baseQuads exactly.
+        china = next(n for n in self.nations if n["name"] == "China")
+        result = project_nation(china, self.geo_risks, year_offset=0)
+        self.assertAlmostEqual(result["quads"], china["baseQuads"], places=2)
+
+    # ── rank_nations_by_resource_cost ─────────────────────────────────────────
+
+    def test_rank_nations_length(self):
+        ranked = rank_nations_by_resource_cost(self.nations, self.geo_risks, year_offset=2)
+        self.assertEqual(len(ranked), len(self.nations))
+
+    def test_rank_nations_sorted_ascending_by_cost(self):
+        ranked = rank_nations_by_resource_cost(self.nations, self.geo_risks, year_offset=2)
+        for i in range(len(ranked) - 1):
+            self.assertLessEqual(ranked[i]["totalCostB"], ranked[i + 1]["totalCostB"])
+
+    def test_rank_nations_rank_field(self):
+        ranked = rank_nations_by_resource_cost(self.nations, self.geo_risks, year_offset=2)
+        ranks = [r["rank"] for r in ranked]
+        self.assertEqual(ranks, list(range(1, len(ranked) + 1)))
+
+    def test_rank_nations_worst_to_first_includes_required_fields(self):
+        ranked = rank_nations_by_resource_cost(self.nations, self.geo_risks, year_offset=2)
+        for entry in ranked:
+            for key in ("name", "region", "rank", "riskScore", "quads", "totalCostB"):
+                self.assertIn(key, entry)
+
+    def test_rank_nations_best_to_worst(self):
+        ranked = rank_nations_by_resource_cost(self.nations, self.geo_risks, year_offset=2)
+        self.assertEqual(len(ranked), 50)
+        print("\n[rank_nations_by_resource_cost] 50 nations ranked best-to-worst "
+              "(rank 1 = lowest projected resource cost):")
+        print(f"  {'Rank':<6} {'Nation':<22} {'Region':<18} "
+              f"{'Total $B':>10}  {'GeoRisk':>8}  {'Geo%':>6}")
+        print("  " + "-" * 76)
+        for r in ranked:
+            print(f"  {r['rank']:<6} {r['name']:<22} {r['region']:<18} "
+                  f"  {r['totalCostB']:>9,.0f}  {r['riskScore']:>7.1f}  {r['geoCostPct']:>5.1f}%")
+
+    def test_projected_daily_consumption_all_50_nations(self):
+        projections = self.data["projected_daily_consumption_2026"]
+        self.assertEqual(len(projections), 50,
+                         "projected_daily_consumption_2026 should contain all 50 nations")
+        nation_names = {n["name"] for n in self.nations}
+        proj_names = {e["country"] for e in projections}
+        self.assertEqual(proj_names, nation_names,
+                         "Every nation should have a projected daily consumption entry")
+        for entry in projections:
+            self.assertGreater(entry["daily_quads"], 0,
+                               f"{entry['country']} daily_quads must be positive")
 
 
 if __name__ == '__main__':
