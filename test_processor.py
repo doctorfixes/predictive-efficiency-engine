@@ -100,7 +100,7 @@ class TestEnergyDataAnalysis(unittest.TestCase):
             self.assertIn("country", entry)
             self.assertIn("daily_quads", entry)
             self.assertGreater(entry["daily_quads"], 0)
-        print(f"\n[projected_daily_consumption_2026] Top 5 countries for 2026:")
+        print("\n[projected_daily_consumption_2026] Top 5 countries for 2026:")
         for entry in self.projections[:5]:
             print(f"  {entry['country']:<20} {entry['daily_quads']:.4f} Quads/day")
 
