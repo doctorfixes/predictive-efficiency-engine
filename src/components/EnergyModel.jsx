@@ -169,7 +169,7 @@ const GEO_RISKS = {
     score: 2.0,
     factors: [
       { type: "Nuclear Fleet Aging", desc: "Aging nuclear fleet requiring maintenance causing supply volatility", severity: 3, prob: 0.65, costMult: 1.05, supplyMult: 0.94, category: "INFRA" },
-      { type: "Energy Transition Politics", desc: "Political debate over nuclear policy creating investment uncertainty", severity: 2, prob: 0.50, costMult: 1.03, supplyMult: 0.97, category: "POLICY" },
+      { type: "Energy Transition Politics", desc: "Political debate over nuclear modernization vs. new-build investment creating policy uncertainty", severity: 2, prob: 0.50, costMult: 1.03, supplyMult: 0.97, category: "POLICY" },
     ],
   },
   Japan: {
@@ -329,6 +329,8 @@ function projectNation(nation, yearOffset) {
   const { costMult, supplyMult } = calcGeoMultipliers(nation.name);
   const growthFactor = Math.pow(1 + nation.growth, yearOffset);
   const renewableDiscount = 1 - nation.renewable * 0.05 * yearOffset;
+  // Supply disruption dampens progressively over 5-year window (mean-reversion assumption:
+  // geopolitical shocks partially normalize as markets adapt and alternative supply routes develop)
   const supplyDampen = 1 - (1 - supplyMult) * Math.min(yearOffset / 5, 1);
   const projectedQuads = nation.baseQuads * growthFactor * renewableDiscount * supplyDampen;
   const projectedCostPerUnit = nation.baseCost * Math.pow(1 + nation.costTrend, yearOffset) * costMult;
@@ -551,7 +553,7 @@ export default function EnergyModel() {
             onClick={() => setSelectedNation(selectedNation?.name === n.name ? null : n)}
           >
             <span style={{ color: COLORS.textDim, fontSize: 11 }}>{n.rank}</span>
-            <span style={{ fontSize: 11, color: COLORS.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{n.name}</span>
+            <span style={{ fontSize: 11, color: COLORS.text, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={n.name}>{n.name}</span>
             {view === "GEO RISK" ? (
               <>
                 <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
