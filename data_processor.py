@@ -1,32 +1,16 @@
-name: Python Data Pipeline Tests
+def data_processor(data):
+    """Process energy consumption data by scaling each value by a factor of 2.
 
-on: [push, pull_request]
+    Args:
+        data: A list of numeric energy values to process.
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+    Returns:
+        A list with each value doubled.
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        # NEW: Caches your libraries so the build runs in 15s instead of 60s
-        cache: 'pip' 
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        # NEW: Only install what's in your requirements file
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        # Fallback if you haven't made a requirements.txt yet
-        pip install pandas numpy 
-
-    - name: Run Data Processor Tests
-      run: |
-        # NEW: Forces the test to fail the whole build if an error occurs
-        python test_processor.py
+    Raises:
+        ValueError: If data is not a list.
+    """
+    if not isinstance(data, list):
+        raise ValueError("Input data must be a list")
+    return [x * 2 for x in data]
 
