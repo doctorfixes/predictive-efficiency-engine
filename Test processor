@@ -1,0 +1,31 @@
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { AreaChart, Area, LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell } from "recharts";
+import * as Papa from "papaparse";
+
+const CSV_URL = "https://files.ember-energy.org/public-downloads/yearly_full_release_long_format.csv";
+
+const COLORS = {
+  bg: "#0a0f1a", surface: "#111827", surfaceAlt: "#1a2332",
+  border: "#1e293b", text: "#e2e8f0", textMuted: "#94a3b8", textDim: "#64748b",
+  accent: "#10b981", accentAlt: "#06d6a0",
+  solar: "#fbbf24", wind: "#38bdf8", hydro: "#22d3ee",
+  nuclear: "#a78bfa", bio: "#34d399", fossil: "#ef4444",
+  coal: "#6b7280", gas: "#f97316", oil: "#dc2626",
+  other: "#8b5cf6", clean: "#10b981", orange: "#f59e0b",
+};
+
+const FUEL_COLORS = {
+  Solar: COLORS.solar, Wind: COLORS.wind, Hydro: COLORS.hydro,
+  Nuclear: COLORS.nuclear, Bioenergy: COLORS.bio,
+  "Other Renewables": COLORS.accentAlt,
+  Coal: COLORS.coal, Gas: COLORS.gas, "Other Fossil": COLORS.oil,
+  Clean: COLORS.clean, Fossil: COLORS.fossil,
+};
+
+const CLEAN_FUELS = ["Solar", "Wind", "Hydro", "Nuclear", "Bioenergy", "Other Renewables"];
+const FOSSIL_FUELS = ["Coal", "Gas", "Other Fossil"];
+const ALL_FUELS = [...CLEAN_FUELS, ...FOSSIL_FUELS];
+
+const TOP_COUNTRIES = ["World", "China", "United States", "India", "EU", "Japan",
+  "Russia", "Brazil", "Germany", "United Kingdom", "France", "Canada",
+  "South Korea", "Australia"];
