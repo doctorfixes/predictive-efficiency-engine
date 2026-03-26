@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import json
 
 def update_energy_pipeline(csv_url, output_path):
