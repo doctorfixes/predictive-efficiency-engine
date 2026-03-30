@@ -3,16 +3,16 @@
 [![Predictive Efficiency Engine - Daily Data Pipeline](https://github.com/doctorfixes/predictive-efficiency-engine/actions/workflows/main.yml/badge.svg)](https://github.com/doctorfixes/predictive-efficiency-engine/actions/workflows/main.yml)
 [![Energy Data Validation](https://github.com/doctorfixes/predictive-efficiency-engine/actions/workflows/energy-data-validation.yml/badge.svg)](https://github.com/doctorfixes/predictive-efficiency-engine/actions/workflows/energy-data-validation.yml)
 
-Production-ready data pipeline for processing energy generation CSV data using stochastic time-series logic with lag features, rolling volatility analysis, and regime detection for efficiency margin prediction. Now includes an Energy Consumption Predictive Model with integrated Geopolitical Risk Overlay.
+Production-ready data pipeline for processing energy consumption JSON data, providing nation-level consumption analysis, geopolitical risk assessment, and multi-year forecasting. Includes an Energy Consumption Predictive Model with integrated Geopolitical Risk Overlay.
 
 ## Overview
 
-This pipeline implements quantitative time-series analysis for energy generation data:
+This pipeline implements quantitative analysis for energy consumption data:
 
-- **Lag Features**: Captures momentum with t-1 and t-24 hour shifts
-- **Rolling Volatility**: 7-day rolling standard deviation for regime detection
-- **Stochastic Thresholds**: 2-sigma uncertainty flags for stress point identification
-- **Daily Execution**: Automated scheduling at 00:00 UTC with push triggers
+- **Top Consumer Ranking**: Nations sorted by base energy consumption in Quads
+- **Geopolitical Risk Assessment**: Composite risk scoring across conflict, trade, sanction, and policy factors
+- **Regional Aggregation**: Total base consumption grouped by geographic region
+- **Consumption Projection**: Compound annual growth forecasting over configurable time horizons
 
 ## Energy Consumption Predictive Model
 
