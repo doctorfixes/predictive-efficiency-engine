@@ -1,4 +1,5 @@
 import json
+import math
 import os
 
 
@@ -170,6 +171,115 @@ def analyze_and_print(data):
         print(row)
     print()
     print("=" * 60)
+
+
+def calc_geo_multipliers(nation_name, geopolitical_risks):
+    """Compute weighted geopolitical cost and supply multipliers for a nation.
+
+    Uses a severity-probability weighted average of all risk factors to produce
+    composite cost and supply multipliers that reflect geopolitical exposure.
+
+    Args:
+        nation_name: Name of the nation.
+        geopolitical_risks: Dict mapping region/nation name to risk data from
+                            energy_stats.json (each entry has 'score' and 'factors').
+
+    Returns:
+        Dict with 'costMult' and 'supplyMult' floats. Both default to 1.0 when
+        no geopolitical risk profile exists for the nation.
+    """
+    if nation_name not in geopolitical_risks:
+        return {"costMult": 1.0, "supplyMult": 1.0}
+    factors = geopolitical_risks[nation_name]["factors"]
+    total_weight = sum(f["severity"] * f["probability"] for f in factors)
+    if total_weight == 0:
+        return {"costMult": 1.0, "supplyMult": 1.0}
+    cost_mult = (
+        sum(f["costMultiplier"] * (f["severity"] * f["probability"]) for f in factors)
+        / total_weight
+    )
+    supply_mult = (
+        sum(f["supplyMultiplier"] * (f["severity"] * f["probability"]) for f in factors)
+        / total_weight
+    )
+    return {"costMult": round(cost_mult, 6), "supplyMult": round(supply_mult, 6)}
+
+
+def project_nation(nation, geopolitical_risks, year_offset):
+    """Project a nation's energy consumption and resource cost with geopolitical overlay.
+
+    Applies compound growth, renewable discount, geopolitical supply dampening, and
+    cost multipliers to produce forward-looking consumption and cost estimates.
+
+    Args:
+        nation: Nation dictionary with keys 'name', 'baseQuads', 'baseCostPerUnit',
+                'renewableShare', 'growthTrend', and 'costTrend'.
+        geopolitical_risks: Dict mapping nation name to risk data.
+        year_offset: Number of years ahead to project (e.g. 2 for 2026 from base 2024).
+
+    Returns:
+        Dict with:
+          'quads'        – projected consumption (Quads),
+          'costPerUnit'  – projected cost per MMBTU (USD),
+          'totalCostB'   – projected total cost in billions USD,
+          'costMult'     – composite geopolitical cost multiplier,
+          'supplyMult'   – composite geopolitical supply multiplier,
+          'geoCostPct'   – geopolitical cost premium as a percentage.
+    """
+    mults = calc_geo_multipliers(nation["name"], geopolitical_risks)
+    growth_factor = math.pow(1 + nation["growthTrend"], year_offset)
+    renewable_discount = 1 - nation["renewableShare"] * 0.05 * year_offset
+    supply_dampen = 1 - (1 - mults["supplyMult"]) * min(year_offset / 5, 1)
+    projected_quads = nation["baseQuads"] * growth_factor * renewable_discount * supply_dampen
+    projected_quads = max(0.0, projected_quads)
+    projected_cost_per_unit = (
+        nation["baseCostPerUnit"]
+        * math.pow(1 + nation["costTrend"], year_offset)
+        * mults["costMult"]
+    )
+    projected_total_cost_b = projected_quads * projected_cost_per_unit * 1e15 / 1e12
+    return {
+        "quads": round(projected_quads, 4),
+        "costPerUnit": round(projected_cost_per_unit, 4),
+        "totalCostB": round(max(0.0, projected_total_cost_b), 2),
+        "costMult": mults["costMult"],
+        "supplyMult": mults["supplyMult"],
+        "geoCostPct": round((mults["costMult"] - 1) * 100, 2),
+    }
+
+
+def rank_nations_by_resource_cost(nations, geopolitical_risks, year_offset):
+    """Rank nations from best to worst based on projected total resource cost.
+
+    Nations with the lowest total projected cost (in billions USD) receive rank 1
+    (best/most affordable), while those with the highest cost receive rank 50
+    (worst/most expensive). The returned list is sorted ascending by total cost
+    so rank 1 (lowest cost) appears first.
+
+    Args:
+        nations: List of nation dictionaries from energy_stats.json.
+        geopolitical_risks: Dict mapping nation name to risk data.
+        year_offset: Number of years ahead to project.
+
+    Returns:
+        List of dicts, each containing the nation's name, rank (1 = best/lowest cost),
+        projected metrics, and risk score. Sorted from rank 1 (lowest cost) to
+        rank N (highest cost).
+    """
+    projections = []
+    for nation in nations:
+        proj = project_nation(nation, geopolitical_risks, year_offset)
+        risk_score = geopolitical_risks.get(nation["name"], {}).get("score", 0.0)
+        projections.append({
+            "name": nation["name"],
+            "region": nation["region"],
+            "riskScore": risk_score,
+            **proj,
+        })
+    projections.sort(key=lambda x: x["totalCostB"])
+    for i, entry in enumerate(projections):
+        entry["rank"] = i + 1
+    return projections
 
 
 if __name__ == "__main__":
